@@ -81,29 +81,31 @@ class _BookSearchState extends State<BookSearch> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _search,
-                      onSubmitted: (__) async {
-                        //TODO: Create function to generate URL with keyword entered, fetch the data from the API, Serialize the returned Json and feeds it to the ListView. Maybe use streams and sink..
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _search,
+                        onSubmitted: (__) async {
+                          resetSearch();
+                          await fetch();
+                        },
+                      ),
+                    ),
+                    GestureDetector(
+                      child: Icon(
+                        Icons.search,
+                        size: 40,
+                      ),
+                      onTap: () async {
                         resetSearch();
                         await fetch();
                       },
                     ),
-                  ),
-                  GestureDetector(
-                    child: Icon(
-                      Icons.search,
-                      size: 40,
-                    ),
-                    onTap: () async {
-                      resetSearch();
-                      await fetch();
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
               Expanded(
                 child: getListBody(),
