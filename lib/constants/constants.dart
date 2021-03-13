@@ -6,3 +6,7 @@ final Color kSecondaryColor = Color(0xFF363636);
 
 /// NetWork constants
 final String kBaseUrl = "https://api.itbook.store/1.0/";
+final String kSearch = "search/";
+final String kBooks = "books/";
+
+// Json serializing keys

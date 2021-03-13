@@ -16,7 +16,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // Delaying navigation to first screen "Search"
     Future.delayed(Duration(seconds: 3), () {
