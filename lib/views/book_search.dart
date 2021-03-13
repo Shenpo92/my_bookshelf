@@ -200,6 +200,9 @@ class _BookSearchState extends State<BookSearch> {
                               _bookList[index].subtitle,
                               style: TextStyle(fontSize: 12),
                             ),
+                            SizedBox(
+                              height: 5,
+                            ),
                             GestureDetector(
                               onTap: () => _launchURL(_bookList[index].url),
                               child: Text(

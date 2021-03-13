@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     // Delaying navigation to first screen "Search"
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushNamed(context, BookSearch.id);
+      Navigator.pushReplacementNamed(context, BookSearch.id);
     });
   }
 
