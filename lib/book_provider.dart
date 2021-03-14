@@ -18,7 +18,7 @@ class BookProvider with ChangeNotifier {
 
   Book get selectedBook => _selectedBook;
 
-  void selectBook(Book book) async {
+  Future<bool> selectBook(Book book) async {
     _selectedBook = null;
     http.Response response;
     final url = Uri.parse(kBaseUrl + kBooks + '/${book.isbn13}');
@@ -28,33 +28,26 @@ class BookProvider with ChangeNotifier {
         final body = json.decode(response.body);
         if (body != null) {
           book.parseDetails(body);
-          // setState(() {
-          //   _page++;
-          //   _isLoading = false;
-          // });
         } else {
           /// API responded with code 200 but the body is empty
-          // setState(() {
-          //   _isLoading = false;
-          //   _error = true;
-          // });
+          return false;
         }
       } else {
         /// API responded with code != 200
-        // setState(() {
-        //   _error = true;
-        //   _isLoading = false;
-        // });
+        return false;
       }
     } catch (e) {
       ///HTTP caught error
       print('Error Caught: $e');
-      // setState(() {
-      //   _error = true;
-      //   _isLoading = false;
-      // });
+      return false;
     }
     _selectedBook = book;
+    notifyListeners();
+    return true;
+  }
+
+  void clearList() {
+    _bookList = [];
     notifyListeners();
   }
 

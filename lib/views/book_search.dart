@@ -233,9 +233,19 @@ class _BookSearchState extends State<BookSearch> {
     }
   }
 
-  void _bookDetail(Book book) {
-    _bookProvider.selectBook(book);
-    Navigator.pushNamed(context, BookDetail.id);
+  void _bookDetail(Book book) async {
+    if (await _bookProvider.selectBook(book) == true) {
+      Navigator.pushNamed(context, BookDetail.id);
+    } else {
+      final snackBar = SnackBar(
+        content: Text(
+          'Could not load information for this book',
+          style: TextStyle(fontSize: 16),
+        ),
+        backgroundColor: Colors.redAccent,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   void _launchURL(String url) async =>
@@ -286,6 +296,7 @@ class _BookSearchState extends State<BookSearch> {
   }
 
   void resetSearch() {
+    _bookProvider.clearList();
     setState(() {
       _totalBooks = 0;
       _bookList = [];
