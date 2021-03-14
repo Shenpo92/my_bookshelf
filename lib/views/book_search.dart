@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:my_bookshelf/books.dart';
+import 'package:my_bookshelf/book.dart';
+import 'package:my_bookshelf/book_provider.dart';
 import 'package:my_bookshelf/constants/constants.dart';
 import 'package:my_bookshelf/views/book_detail.dart';
 import 'package:my_bookshelf/views/splash.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -21,6 +22,7 @@ class _BookSearchState extends State<BookSearch> {
   TextEditingController _search = TextEditingController();
   ScrollController _scrollController = ScrollController();
   List<Book> _bookList = [];
+  BookProvider _bookProvider;
   int _totalBooks;
   int _page;
   bool _error;
@@ -65,6 +67,8 @@ class _BookSearchState extends State<BookSearch> {
 
   @override
   Widget build(BuildContext context) {
+    _bookProvider = Provider.of<BookProvider>(context);
+    _bookList = _bookProvider.bookList;
     return Scaffold(
         appBar: AppBar(
           leading: Tab(
@@ -175,7 +179,7 @@ class _BookSearchState extends State<BookSearch> {
               }
             }
             return GestureDetector(
-              onTap: _bookDetail,
+              onTap: () => _bookDetail(_bookList[index]),
               child: Card(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -229,7 +233,8 @@ class _BookSearchState extends State<BookSearch> {
     }
   }
 
-  void _bookDetail() {
+  void _bookDetail(Book book) {
+    _bookProvider.selectBook(book);
     Navigator.pushNamed(context, BookDetail.id);
   }
 
@@ -250,24 +255,27 @@ class _BookSearchState extends State<BookSearch> {
           final body = json.decode(response.body);
           if (body != null && int.parse(body['total']) != 0) {
             _totalBooks = int.parse(body['total']);
-            _bookList.addAll(Book.parseList(body['books']));
+            _bookProvider.addToList(Book.parseList(body['books']));
             setState(() {
               _page++;
               _isLoading = false;
             });
           } else {
+            /// API responded with code 200 but the body is empty
             setState(() {
               _isLoading = false;
               _error = true;
             });
           }
         } else {
+          /// API responded with code != 200
           setState(() {
             _error = true;
             _isLoading = false;
           });
         }
       } catch (e) {
+        ///HTTP caught error
         print('Error Caught: $e');
         setState(() {
           _error = true;

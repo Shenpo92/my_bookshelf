@@ -65,17 +65,9 @@ class IsolateWorker {
     http.Response response;
     try {
       response = await http.get(Uri(path: url));
-    } on SocketException catch (e) {
-      // throw HackerNewsApiException(message: "$url couldn't be fetched: $e");
-    }
-    if (response.statusCode != 200) {
-      // throw HackerNewsApiException(message: "$url returned non-HTTP200");
-    }
+    } on SocketException catch (e) {}
+    if (response.statusCode != 200) {}
     print(response.body);
-    //
-    // var result = parseStoryIds(response.body);
-    //
-    // return result.take(10).toList();
   }
 
   static void _isolateEntry(dynamic message) {

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_bookshelf/constants/constants.dart';
-import 'package:my_bookshelf/views/book_detail.dart';
 import 'package:my_bookshelf/views/book_search.dart';
 
 class SplashScreen extends StatefulWidget {

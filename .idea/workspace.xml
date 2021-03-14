@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d788418d-fdd3-419d-8702-a2f88e1a2a38" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="6525e33a-ec18-4e17-a9e4-fbe973fc15ee" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/book_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/components/book_detail_column.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/books.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/book.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/constants/constants.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/constants/constants.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/isolate_worker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/isolate_worker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/views/book_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/views/book_detail.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/views/book_search.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/views/book_search.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/views/splash.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/views/splash.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1pamldJeOJSATgUoXfS2MxLeHtH" />
+  <component name="ProjectId" id="1pk8zkWLe6srlB3xTSumL4Q6aBq" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -32,69 +41,52 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets" />
-    </key>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d788418d-fdd3-419d-8702-a2f88e1a2a38" name="Default Changelist" comment="" />
-      <created>1615429728008</created>
+      <changelist id="6525e33a-ec18-4e17-a9e4-fbe973fc15ee" name="Default Changelist" comment="" />
+      <created>1615715991274</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1615429728008</updated>
+      <updated>1615715991274</updated>
     </task>
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="603" y="333" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1615554057536">
+    <state x="327" y="327" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1615725380300">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
-    <state x="603" y="333" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1680.1025@0.25.1680.1025" timestamp="1615554057536" />
-    <state x="2369" y="342" key="#com.intellij.fileTypes.FileTypeChooser/1680.25.1920.1055/0.25.1680.1025/-1920.25.1920.1055@1680.25.1920.1055" timestamp="1615430801856" />
-    <state width="1626" height="263" key="GridCell.Tab.0.bottom" timestamp="1615644008768">
+    <state x="327" y="327" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1680.1025@0.25.1680.1025" timestamp="1615725380300" />
+    <state x="606" y="190" key="#com.intellij.ide.util.MemberChooser" timestamp="1615728416571">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
-    <state width="1626" height="263" key="GridCell.Tab.0.bottom/0.25.1680.1025@0.25.1680.1025" timestamp="1615644008768" />
-    <state width="1860" height="274" key="GridCell.Tab.0.bottom/1680.25.1920.1055/0.25.1680.1025/-1920.25.1920.1055@1680.25.1920.1055" timestamp="1615453785792" />
-    <state width="1626" height="263" key="GridCell.Tab.0.center" timestamp="1615644008767">
+    <state x="606" y="190" key="#com.intellij.ide.util.MemberChooser/0.25.1680.1025@0.25.1680.1025" timestamp="1615728416571" />
+    <state width="1199" height="222" key="GridCell.Tab.0.bottom" timestamp="1615741145174">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
-    <state width="1626" height="263" key="GridCell.Tab.0.center/0.25.1680.1025@0.25.1680.1025" timestamp="1615644008767" />
-    <state width="1860" height="274" key="GridCell.Tab.0.center/1680.25.1920.1055/0.25.1680.1025/-1920.25.1920.1055@1680.25.1920.1055" timestamp="1615453785791" />
-    <state width="1626" height="263" key="GridCell.Tab.0.left" timestamp="1615644008766">
+    <state width="1199" height="222" key="GridCell.Tab.0.bottom/0.25.1680.1025@0.25.1680.1025" timestamp="1615741145174" />
+    <state width="1199" height="222" key="GridCell.Tab.0.center" timestamp="1615741145170">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
-    <state width="1626" height="263" key="GridCell.Tab.0.left/0.25.1680.1025@0.25.1680.1025" timestamp="1615644008766" />
-    <state width="1860" height="274" key="GridCell.Tab.0.left/1680.25.1920.1055/0.25.1680.1025/-1920.25.1920.1055@1680.25.1920.1055" timestamp="1615453785790" />
-    <state width="1626" height="263" key="GridCell.Tab.0.right" timestamp="1615644008767">
+    <state width="1199" height="222" key="GridCell.Tab.0.center/0.25.1680.1025@0.25.1680.1025" timestamp="1615741145170" />
+    <state width="1199" height="222" key="GridCell.Tab.0.left" timestamp="1615741145168">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
-    <state width="1626" height="263" key="GridCell.Tab.0.right/0.25.1680.1025@0.25.1680.1025" timestamp="1615644008767" />
-    <state width="1860" height="274" key="GridCell.Tab.0.right/1680.25.1920.1055/0.25.1680.1025/-1920.25.1920.1055@1680.25.1920.1055" timestamp="1615453785792" />
-    <state x="435" y="25" width="838" height="1032" key="search.everywhere.popup" timestamp="1615616346929">
+    <state width="1199" height="222" key="GridCell.Tab.0.left/0.25.1680.1025@0.25.1680.1025" timestamp="1615741145168" />
+    <state width="1199" height="222" key="GridCell.Tab.0.right" timestamp="1615741145174">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
-    <state x="435" y="25" width="838" height="1032" key="search.everywhere.popup/0.25.1680.1025@0.25.1680.1025" timestamp="1615616346929" />
-  </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="FlutterRunConfigurationType">
-        <watch expression="body" />
-        <watch expression="response" />
-        <watch expression="_bookList" />
-      </configuration>
-    </watches-manager>
+    <state width="1199" height="222" key="GridCell.Tab.0.right/0.25.1680.1025@0.25.1680.1025" timestamp="1615741145174" />
   </component>
 </project>
