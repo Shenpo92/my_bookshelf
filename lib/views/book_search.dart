@@ -6,6 +6,7 @@ import 'package:my_bookshelf/constants/constants.dart';
 import 'package:my_bookshelf/views/book_detail.dart';
 import 'package:my_bookshelf/views/splash.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookSearch extends StatefulWidget {
@@ -20,6 +21,7 @@ class _BookSearchState extends State<BookSearch> {
   ScrollController _scrollController = ScrollController();
   List<Book> _bookList = [];
   BookProvider _bookProvider;
+  List<String> _recentSearchList = [];
   bool _error;
   bool _noMoreData;
   bool _isLoading;
@@ -101,7 +103,11 @@ class _BookSearchState extends State<BookSearch> {
                         decoration:
                             InputDecoration(hintText: 'ex: Android, IOS ...'),
                         controller: _search,
+                        onChanged: (_) {
+                          _getRecentSearches();
+                        },
                         onSubmitted: (__) async {
+                          _saveSearch();
                           resetSearch();
                           await fetch();
                         },
@@ -113,6 +119,7 @@ class _BookSearchState extends State<BookSearch> {
                         size: 40,
                       ),
                       onTap: () async {
+                        _saveSearch();
                         resetSearch();
                         await fetch();
                       },
@@ -128,8 +135,76 @@ class _BookSearchState extends State<BookSearch> {
         ));
   }
 
+  Future<void> _getRecentSearches() async {
+    if (_search.text.isEmpty || _search.text == null) {
+      setState(() => _recentSearchList = []);
+      return;
+    }
+    _recentSearchList = [];
+    final prefs = await SharedPreferences.getInstance();
+    final allSearches = prefs.getStringList("recentSearches").toSet() ?? {};
+    if (allSearches == null) return;
+    var distinctList = allSearches
+        .where((search) =>
+            search.toLowerCase().startsWith(_search.text.toLowerCase()))
+        .toSet()
+        .toList();
+    setState(() {
+      _recentSearchList.addAll(distinctList);
+    });
+  }
+
+  Future<void> _saveSearch() async {
+    /// To prevent saving null or empty string
+    if (_search.text == null || _search.text.isEmpty) return;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    /// Use `Set` to avoid duplication of recentSearches
+    Set<String> allSearches =
+        prefs.getStringList("recentSearches")?.toSet() ?? {};
+
+    //Place it at first in the set
+    allSearches = {_search.text, ...allSearches};
+    prefs.setStringList("recentSearches", allSearches.toList());
+  }
+
+  Future<void> removeRecentSearch(String recentSearch) async {
+    final prefs = await SharedPreferences.getInstance();
+    final allSearches = prefs.getStringList("recentSearches");
+    allSearches.remove(recentSearch);
+    prefs.setStringList("recentSearches", allSearches.toList());
+    await _getRecentSearches();
+  }
+
   Widget getListBody() {
-    if (_bookList.isEmpty && _error != true) {
+    if (_recentSearchList.isNotEmpty) {
+      return (ListView.builder(
+        itemCount: _recentSearchList.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Icon(Icons.restore),
+            title: Text("${_recentSearchList[index]}"),
+            onTap: () async {
+              setState(() {
+                _search.text = _recentSearchList[index];
+                resetSearch();
+              });
+              fetch();
+            },
+            trailing: IconButton(
+              onPressed: () {
+                removeRecentSearch(_recentSearchList[index]);
+              },
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red[400],
+              ),
+            ),
+          );
+        },
+      ));
+    } else if (_bookList.isEmpty && _error != true) {
       if (_isLoading == true) {
         return Center(
           child: CircularProgressIndicator(),
@@ -294,6 +369,7 @@ class _BookSearchState extends State<BookSearch> {
       await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 
   void resetSearch() {
+    _recentSearchList = [];
     _bookProvider.clearList();
     setState(() {
       _bookList = [];
