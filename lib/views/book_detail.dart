@@ -49,6 +49,7 @@ class _BookDetailState extends State<BookDetail> {
           ),
           onPressed: () {
             _bookProvider.addNote(_notes.text);
+            _bookProvider.clearSelectedBook();
             Navigator.pop(context);
           },
         ),

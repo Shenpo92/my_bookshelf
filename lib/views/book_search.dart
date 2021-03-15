@@ -5,10 +5,7 @@ import 'package:my_bookshelf/book_provider.dart';
 import 'package:my_bookshelf/constants/constants.dart';
 import 'package:my_bookshelf/views/book_detail.dart';
 import 'package:my_bookshelf/views/splash.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'dart:convert';
-
 import 'package:url_launcher/url_launcher.dart';
 
 class BookSearch extends StatefulWidget {
@@ -23,11 +20,11 @@ class _BookSearchState extends State<BookSearch> {
   ScrollController _scrollController = ScrollController();
   List<Book> _bookList = [];
   BookProvider _bookProvider;
-  int _totalBooks;
   int _page;
   bool _error;
   bool _noMoreData;
   bool _isLoading;
+  bool _detailClicked;
 
   @override
   void initState() {
@@ -35,7 +32,7 @@ class _BookSearchState extends State<BookSearch> {
     _error = false;
     _noMoreData = false;
     _isLoading = false;
-    _totalBooks = 0;
+    _detailClicked = false;
     _page = 1;
     _scrollController.addListener(() {
       final delta = 250.00;
@@ -44,14 +41,15 @@ class _BookSearchState extends State<BookSearch> {
       if ((_scrollController.position.maxScrollExtent -
               _scrollController.position.pixels) <=
           delta) {
-        print('${_bookList.length}/$_totalBooks');
+        print('${_bookList.length}/${_bookProvider.totalBooks}');
 
         /// Check if there are more books to fetch. It prevents from doing unnecessary calls to API
-        if (_bookList.isNotEmpty && _bookList.length < _totalBooks) {
+        if (_bookList.isNotEmpty &&
+            _bookList.length < _bookProvider.totalBooks) {
+          _page++;
           fetch();
         } else {
           setState(() {
-            _isLoading = false;
             _noMoreData = true;
           });
         }
@@ -69,6 +67,8 @@ class _BookSearchState extends State<BookSearch> {
   Widget build(BuildContext context) {
     _bookProvider = Provider.of<BookProvider>(context);
     _bookList = _bookProvider.bookList;
+    _isLoading = _bookProvider.isLoading;
+
     return Scaffold(
         appBar: AppBar(
           leading: Tab(
@@ -80,6 +80,18 @@ class _BookSearchState extends State<BookSearch> {
           ),
           title: Text("Search a topic"),
           centerTitle: false,
+          actions: [
+            _detailClicked
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      backgroundColor: Colors.white,
+                      valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+                    )),
+                  )
+                : Container()
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -179,7 +191,13 @@ class _BookSearchState extends State<BookSearch> {
               }
             }
             return GestureDetector(
-              onTap: () => _bookDetail(_bookList[index]),
+              onTap: () async {
+                if (_detailClicked == false) {
+                  setState(() => _detailClicked = true);
+                  await _bookDetail(_bookList[index]);
+                  setState(() => _detailClicked = false);
+                }
+              },
               child: Card(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -233,72 +251,37 @@ class _BookSearchState extends State<BookSearch> {
     }
   }
 
-  void _bookDetail(Book book) async {
-    if (await _bookProvider.selectBook(book) == true) {
-      Navigator.pushNamed(context, BookDetail.id);
-    } else {
-      final snackBar = SnackBar(
-        content: Text(
-          'Could not load information for this book',
-          style: TextStyle(fontSize: 16),
-        ),
-        backgroundColor: Colors.redAccent,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  Future<void> fetch() async {
+    if (!await _bookProvider.fetchBookList(_search.text, _page)) {
+      setState(() {
+        _error = true;
+      });
+    }
+  }
+
+  Future<void> _bookDetail(Book book) async {
+    if (_bookProvider.selectedBook == null) {
+      if (!await _bookProvider.fetchBookDetail(book)) {
+        final snackBar = SnackBar(
+          content: Text(
+            'Could not load information for this book',
+            style: TextStyle(fontSize: 16),
+          ),
+          backgroundColor: Colors.redAccent,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        Navigator.pushNamed(context, BookDetail.id);
+      }
     }
   }
 
   void _launchURL(String url) async =>
       await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 
-  Future<void> fetch() async {
-    http.Response response;
-    final url = Uri.parse(
-        kBaseUrl + kSearch + _search.text + ((_page != 1) ? '/$_page' : ''));
-
-    /// Makes sure that we are not already processing an API call before re-calling it.
-    if (_isLoading == false) {
-      _isLoading = true;
-      try {
-        response = await http.get(url);
-        if (response.statusCode == 200) {
-          final body = json.decode(response.body);
-          if (body != null && int.parse(body['total']) != 0) {
-            _totalBooks = int.parse(body['total']);
-            _bookProvider.addToList(Book.parseList(body['books']));
-            setState(() {
-              _page++;
-              _isLoading = false;
-            });
-          } else {
-            /// API responded with code 200 but the body is empty
-            setState(() {
-              _isLoading = false;
-              _error = true;
-            });
-          }
-        } else {
-          /// API responded with code != 200
-          setState(() {
-            _error = true;
-            _isLoading = false;
-          });
-        }
-      } catch (e) {
-        ///HTTP caught error
-        print('Error Caught: $e');
-        setState(() {
-          _error = true;
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
   void resetSearch() {
     _bookProvider.clearList();
     setState(() {
-      _totalBooks = 0;
       _bookList = [];
       _page = 1;
       _error = false;
