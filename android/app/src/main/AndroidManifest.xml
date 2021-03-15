@@ -2,7 +2,7 @@
     package="com.example.my_bookshelf">
    <application
         android:label="my_bookshelf"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

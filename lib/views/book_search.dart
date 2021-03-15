@@ -98,6 +98,8 @@ class _BookSearchState extends State<BookSearch> {
                   children: [
                     Expanded(
                       child: TextField(
+                        decoration:
+                            InputDecoration(hintText: 'ex: Android, IOS ...'),
                         controller: _search,
                         onSubmitted: (__) async {
                           resetSearch();
@@ -127,10 +129,27 @@ class _BookSearchState extends State<BookSearch> {
   }
 
   Widget getListBody() {
-    if (_bookList.isEmpty && _isLoading == true) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
+    if (_bookList.isEmpty) {
+      if (_isLoading == true) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      } else {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.search,
+              size: 200,
+              color: Colors.grey[300],
+            ),
+            Text(
+              "Nothing to show yet",
+              style: TextStyle(color: Colors.grey[300], fontSize: 30),
+            )
+          ],
+        );
+      }
     } else if (_error) {
       return Center(
         child: Column(
