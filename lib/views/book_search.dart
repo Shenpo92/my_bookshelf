@@ -20,7 +20,6 @@ class _BookSearchState extends State<BookSearch> {
   ScrollController _scrollController = ScrollController();
   List<Book> _bookList = [];
   BookProvider _bookProvider;
-  int _page;
   bool _error;
   bool _noMoreData;
   bool _isLoading;
@@ -33,7 +32,6 @@ class _BookSearchState extends State<BookSearch> {
     _noMoreData = false;
     _isLoading = false;
     _detailClicked = false;
-    _page = 1;
     _scrollController.addListener(() {
       final delta = 250.00;
 
@@ -41,12 +39,9 @@ class _BookSearchState extends State<BookSearch> {
       if ((_scrollController.position.maxScrollExtent -
               _scrollController.position.pixels) <=
           delta) {
-        print('${_bookList.length}/${_bookProvider.totalBooks}');
-
         /// Check if there are more books to fetch. It prevents from doing unnecessary calls to API
         if (_bookList.isNotEmpty &&
             _bookList.length < _bookProvider.totalBooks) {
-          _page++;
           fetch();
         } else {
           setState(() {
@@ -252,7 +247,7 @@ class _BookSearchState extends State<BookSearch> {
   }
 
   Future<void> fetch() async {
-    if (!await _bookProvider.fetchBookList(_search.text, _page)) {
+    if (!await _bookProvider.fetchBookList(_search.text)) {
       setState(() {
         _error = true;
       });
@@ -283,7 +278,6 @@ class _BookSearchState extends State<BookSearch> {
     _bookProvider.clearList();
     setState(() {
       _bookList = [];
-      _page = 1;
       _error = false;
       _noMoreData = false;
     });

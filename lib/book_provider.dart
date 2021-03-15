@@ -11,6 +11,7 @@ class BookProvider with ChangeNotifier {
   List<Book> get bookList => _bookList;
   bool _isLoading = false;
   int _totalBooks = 0;
+  int _page = 1;
 
   void addToList(List<Book> books) {
     _bookList.addAll(books);
@@ -21,10 +22,10 @@ class BookProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   int get totalBooks => _totalBooks;
 
-  Future<bool> fetchBookList(String search, int page) async {
+  Future<bool> fetchBookList(String search) async {
     http.Response response;
-    final url =
-        Uri.parse(kBaseUrl + kSearch + search + ((page != 1) ? '/$page' : ''));
+    final url = Uri.parse(
+        kBaseUrl + kSearch + search + ((_page != 1) ? '/$_page' : ''));
 
     /// Makes sure that we are not already processing an API call before re-calling it.
     if (_isLoading == false) {
@@ -36,6 +37,7 @@ class BookProvider with ChangeNotifier {
           if (body != null && int.parse(body['total']) != 0) {
             _totalBooks = int.parse(body['total']);
             _bookList.addAll(Book.parseList(body['books']));
+            _page++;
             _isLoading = false;
           } else {
             /// API responded with code 200 but the body is empty
@@ -94,6 +96,7 @@ class BookProvider with ChangeNotifier {
   /// This function allows to clear the list of books before any search to prevent data from previous search to also appear in the results.
   void clearList() {
     _bookList = [];
+    _page = 1;
     notifyListeners();
   }
 
