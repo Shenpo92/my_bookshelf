@@ -129,7 +129,7 @@ class _BookSearchState extends State<BookSearch> {
   }
 
   Widget getListBody() {
-    if (_bookList.isEmpty) {
+    if (_bookList.isEmpty && _error != true) {
       if (_isLoading == true) {
         return Center(
           child: CircularProgressIndicator(),
